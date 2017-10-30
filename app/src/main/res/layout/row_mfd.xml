@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="50dip"
+    android:orientation="vertical"
+    android:paddingTop="3dip"
+    android:paddingBottom="3dip">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/item_layout"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:background="@color/lightestgrey"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/dot"
+            android:layout_alignParentTop="true"
+            android:layout_weight="3"
+            android:paddingBottom="3dip">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="1dip"
+                android:paddingLeft="7dip">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/mfd_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textSize="16sp"
+                        android:textColor="@color/textblack"
+                        android:text="1673010001001B" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/mfd_prov"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textSize="12sp"
+                        android:textColor="@color/textblack"
+                        android:text="16 - Sumatera Selatan" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/mfd_kab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textSize="12sp"
+                        android:textColor="@color/textblack"
+                        android:text="73 - Pagaralam" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/dot"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:background="@color/textPurple"
+            android:paddingTop="3dip"
+            android:paddingRight="7dip"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_weight="2">
+            <TextView
+                android:id="@+id/mfd_kec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:text="010 - Dempo Selatan" />
+            <TextView
+                android:id="@+id/mfd_desa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:text="Desa : 001 - Penjalang" />
+
+            <TextView
+                android:id="@+id/mfd_bs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:text="BS : 001B" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/horizontal_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:orientation="vertical"
+        android:background="@color/textPurple"
+        android:layout_alignParentBottom="true" />
+</LinearLayout>
