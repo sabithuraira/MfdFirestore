@@ -4,9 +4,26 @@
     <string name="title_activity_form">Form</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+
+    <string name="prompt_provinsi">Provinsi</string>
+    <string name="prompt_kabupaten">Kabupaten/Kota</string>
+    <string name="prompt_kecamatan">Kecamatan</string>
+    <string name="prompt_desa">Desa/Kelurahan</string>
+    <string name="prompt_bs">Blok Sensus</string>
+
+
+    <string name="prompt_kk">Jumlah KK</string>
+    <string name="prompt_bsbtt">Jumlah BSBTT/BSTTK</string>
+    <string name="prompt_muatan_dominan">Muatan Dominan</string>
+    <string name="prompt_ruta_biasa">Ruta Biasa</string>
+    <string name="prompt_ruta_khusus">Ruta Khusus</string>
+    <string name="prompt_art_laki">ART Laki-laki</string>
+    <string name="prompt_art_perempuan">ART Perempuan</string>
+
+    <string name="prompt_no">Kode</string>
+    <string name="prompt_name">Nama</string>
+
+    <string name="action_submit">Submit</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
