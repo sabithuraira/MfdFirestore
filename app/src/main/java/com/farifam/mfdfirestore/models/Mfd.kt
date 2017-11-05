@@ -11,6 +11,13 @@ class Mfd{
     var kec: String = ""
     var desa: String = ""
     var bs: String = ""
+    var jumlah_kk: Int? = null;
+    var bsbtt: Int? = null;
+    var muatan_dominan: String? = null;
+    var ruta_biasa: Int? = null;
+    var ruta_khusus: Int? = null;
+    var art_laki: Int? = null;
+    var art_perempuan: Int? = null;
 
     var prov_no: Int? = null
     var kab_no:  String? = null
