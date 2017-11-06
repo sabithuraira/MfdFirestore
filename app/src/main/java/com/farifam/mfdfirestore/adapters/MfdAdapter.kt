@@ -52,11 +52,11 @@ class MfdAdapter(private val dataSet: ArrayList<Mfd>, internal var mContext: Con
 
 
         viewHolder.mfd_code!!.setText(dataModel!!.code)
-        viewHolder.mfd_prov!!.setText(dataModel!!.prov_no.toString() + " - " + dataModel!!.prov)
-        viewHolder.mfd_kab!!.setText(dataModel!!.kab_no.toString() + " - " + dataModel!!.kab)
-        viewHolder.mfd_kec!!.setText(dataModel!!.kec_no.toString() + " - " + dataModel!!.kec)
-        viewHolder.mfd_desa!!.setText(dataModel!!.desa_no.toString() + " - " + dataModel!!.desa)
-        viewHolder.mfd_bs!!.setText(dataModel!!.bs)
+        viewHolder.mfd_prov!!.setText(dataModel!!.prov_no + " - " + dataModel!!.prov_nama)
+        viewHolder.mfd_kab!!.setText(dataModel!!.kab_no + " - " + dataModel!!.kab_nama)
+        viewHolder.mfd_kec!!.setText(dataModel!!.kec_no + " - " + dataModel!!.kec_nama)
+        viewHolder.mfd_desa!!.setText(dataModel!!.desa_no + " - " + dataModel!!.desa_nama)
+        viewHolder.mfd_bs!!.setText(dataModel!!.blok_sensus)
 
 
         return convertView

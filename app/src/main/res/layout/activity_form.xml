@@ -202,77 +202,211 @@
                 android:background="@color/grey"
                 android:visibility="visible" />
 
-            <EditText
-                android:id="@+id/blok_sensus"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_bs"
                 android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/kk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_kk"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Blok Sensus"
+                    android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/bsbtt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_bsbtt"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                <EditText
+                    android:id="@+id/blok_sensus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/prompt_bs"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
-            <EditText
-                android:id="@+id/muatan_dominan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_muatan_dominan"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/ruta_biasa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_ruta_biasa"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
 
-            <EditText
-                android:id="@+id/ruta_khusus"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_ruta_khusus"
                 android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/art_laki"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_art_laki"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_kk"
+                    android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/art_perempuan"
+                <EditText
+                    android:id="@+id/kk"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_art_perempuan"
                 android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_bsbtt"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/bsbtt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_muatan_dominan"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/muatan_dominan"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_ruta_biasa"
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/ruta_biasa"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_ruta_khusus"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/ruta_khusus"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_art_laki"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/art_laki"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/prompt_art_perempuan"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/art_perempuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+            </LinearLayout>
 
 
             <Button

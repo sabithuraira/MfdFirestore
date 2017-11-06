@@ -1,6 +1,7 @@
 package com.farifam.mfdfirestore
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
@@ -94,38 +96,31 @@ class MainActivity : AppCompatActivity() {
     fun loadFirestoreDatas(){
         progress.visibility = View.VISIBLE
 
-        val memberCollection = db.collection("members");
-        var query : Query = memberCollection.orderBy("first")
+        val memberCollection = db.collection("datas");
+//        var query : Query = memberCollection.orderBy("first")
 
 //        if(search.text.toString().length>0){
 //            query = memberCollection.whereEqualTo("first", search.text.toString())
 //
 //        }
 
-        query.
-                addSnapshotListener(object : EventListener<QuerySnapshot> {
-                    override fun onEvent(@Nullable querySnapshot: QuerySnapshot,
-                                         @Nullable e: FirebaseFirestoreException?) {
-                        if (e != null) {
-//                            Log.w(FragmentActivity.TAG, "Listen error", e)
-                            return
+        memberCollection.get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        list_member.clear()
+                        for (document in task.result) {
+                            list_member.add(document.toObject(Mfd::class.java))
                         }
 
-                        for (change in querySnapshot.documentChanges) {
-                            if (change.type == DocumentChange.Type.ADDED) {
-//                                Log.d(FragmentActivity.TAG, "New city:" + change.document.data)
+                        dataAdapter = MfdAdapter(ArrayList(list_member), applicationContext)
+                        listview.setAdapter(dataAdapter)
 
-                            }
-
-                            val source = if (querySnapshot.metadata.isFromCache)
-                                "local cache"
-                            else
-                                "server"
-//                            Log.d(FragmentActivity.TAG, "Data fetched from " + source)
-                        }
-
+                        progress.visibility = View.GONE
+                    } else {
+                        Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
+                        progress.visibility = View.GONE
                     }
-                })
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

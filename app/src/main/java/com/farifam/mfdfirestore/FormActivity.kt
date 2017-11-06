@@ -23,7 +23,8 @@ class FormActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form)
 
-        id = intent.getStringExtra("id")
+        if (intent.hasExtra("id"))
+            id = intent.getStringExtra("id")
 
         if(id.length!=0){
             initializeUpdate()
@@ -43,13 +44,13 @@ class FormActivity : AppCompatActivity(){
             data.put("desa_no", desa_no.text.toString())
             data.put("desa_nama", desa_nama.text.toString())
             data.put("blok_sensus", blok_sensus.text.toString())
-            data.put("kk", kk.text.toString())
-            data.put("bsbtt", bsbtt.text.toString())
+            data.put("kk", kk.text.toString().toInt())
+            data.put("bsbtt", bsbtt.text.toString().toInt())
             data.put("muatan_dominan", muatan_dominan.text.toString())
-            data.put("ruta_biasa", ruta_biasa.text.toString())
-            data.put("ruta_khusus", ruta_khusus.text.toString())
-            data.put("art_laki", art_laki.text.toString())
-            data.put("art_perempuan", art_perempuan.text.toString())
+            data.put("ruta_biasa", ruta_biasa.text.toString().toInt())
+            data.put("ruta_khusus", ruta_khusus.text.toString().toInt())
+            data.put("art_laki", art_laki.text.toString().toInt())
+            data.put("art_perempuan", art_perempuan.text.toString().toInt())
 
             if(id.length==0){
                 db.collection("datas")
