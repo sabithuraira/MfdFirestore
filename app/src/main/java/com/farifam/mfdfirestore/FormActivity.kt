@@ -66,7 +66,7 @@ class FormActivity : AppCompatActivity(){
                         }
             }
             else{
-                db.collection("members").document(id)
+                db.collection("datas").document(id)
                         .update(data)
                         .addOnSuccessListener{
                             val intent = Intent()

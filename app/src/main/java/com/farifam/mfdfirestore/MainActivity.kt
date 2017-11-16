@@ -20,6 +20,11 @@ import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.*
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
+
+
 
 class MainActivity : AppCompatActivity() {
     val settings: FirebaseFirestoreSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build();
@@ -64,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun deleteData(position: Int){
-        db.collection("members").document(list_member[position].code)
+        db.collection("datas").document(list_member[position].code)
                 .delete()
                 .addOnSuccessListener{
                     loadFirestoreDatas()
@@ -76,10 +81,25 @@ class MainActivity : AppCompatActivity() {
 
     fun updateData(position: Int){
         val intent = Intent(this, FormActivity::class.java)
-//        intent.putExtra("id", list_member[position].id)
-//        intent.putExtra("first_name", list_member[position].first)
-//        intent.putExtra("last_name", list_member[position].last)
-//        intent.putExtra("born", list_member[position].born)
+        intent.putExtra("id","1")
+
+        intent.putExtra("prov_no", list_member[position].prov_no)
+        intent.putExtra("prov_nama", list_member[position].prov_nama)
+        intent.putExtra("kab_no", list_member[position].kab_no)
+        intent.putExtra("kab_nama", list_member[position].kab_nam)
+        intent.putExtra("kec_no", list_member[position].kec_no)
+        intent.putExtra("kec_nama", list_member[position].kec_nama)
+        intent.putExtra("desa_no", list_member[position].desa_no)
+        intent.putExtra("desa_nama", list_member[position].desa_nama)
+        intent.putExtra("blok_sensus", list_member[position].blok_sensus)
+        intent.putExtra("kk", list_member[position].kk)
+        intent.putExtra("bsbtt", list_member[position].bsbtt)
+        intent.putExtra("muatan_dominan", list_member[position].muatan_dominan)
+        intent.putExtra("ruta_biasa", list_member[position].ruta_biasa)
+        intent.putExtra("ruta_khusus", list_member[position].ruta_khusus)
+        intent.putExtra("art_laki", list_member[position].art_laki)
+        intent.putExtra("art_perempuan", list_member[position].art_perempuan)
+
         startActivityForResult(intent, FORM_ACTIVITY_CODE)
     }
 
@@ -104,11 +124,34 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 
-        memberCollection.get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        list_member.clear()
-                        for (document in task.result) {
+//        memberCollection.get()
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        list_member.clear()
+//                        for (document in task.result) {
+//                            list_member.add(document.toObject(Mfd::class.java))
+//                        }
+//
+//                        dataAdapter = MfdAdapter(ArrayList(list_member), applicationContext)
+//                        listview.setAdapter(dataAdapter)
+//
+//                        progress.visibility = View.GONE
+//                    } else {
+//                        Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
+//                        progress.visibility = View.GONE
+//                    }
+//                }
+
+        memberCollection
+                .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                    override fun onEvent(querySnapshot: QuerySnapshot?,
+                                e: FirebaseFirestoreException?) {
+                        if (e != null) {
+                            Log.w(ContentValues.TAG, "Listen error", e)
+                            return
+                        }
+
+                        for (document in querySnapshot!!) {
                             list_member.add(document.toObject(Mfd::class.java))
                         }
 
@@ -116,11 +159,21 @@ class MainActivity : AppCompatActivity() {
                         listview.setAdapter(dataAdapter)
 
                         progress.visibility = View.GONE
-                    } else {
-                        Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
-                        progress.visibility = View.GONE
+
+                        for (change in querySnapshot!!.documentChanges) {
+                            if (change.type == DocumentChange.Type.ADDED) {
+                                Log.d(ContentValues.TAG, "New city:" + change.document.data)
+                            }
+
+                            val source = if (querySnapshot.metadata.isFromCache)
+                                "local cache"
+                            else
+                                "server"
+                            Log.d(ContentValues.TAG, "Data fetched from " + source)
+                        }
+
                     }
-                }
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
