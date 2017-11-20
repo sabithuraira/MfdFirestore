@@ -5,6 +5,7 @@ package com.farifam.mfdfirestore.models
  */
 
 class Mfd{
+    var id: String = ""
     val code: String
         get() = prov_no+kab_no+kec_no+desa_no+" "+blok_sensus
 

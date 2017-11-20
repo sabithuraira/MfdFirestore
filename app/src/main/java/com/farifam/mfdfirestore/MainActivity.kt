@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.os.MemoryFile
 import android.support.annotation.Nullable
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun deleteData(position: Int){
-        db.collection("datas").document(list_member[position].code)
+        db.collection("datas").document(list_member[position].id)
                 .delete()
                 .addOnSuccessListener{
                     loadFirestoreDatas()
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     fun updateData(position: Int){
         val intent = Intent(this, FormActivity::class.java)
-        intent.putExtra("id","1")
+        intent.putExtra("id",list_member[position].id)
 
         intent.putExtra("prov_no", list_member[position].prov_no)
         intent.putExtra("prov_nama", list_member[position].prov_nama)
@@ -152,8 +153,11 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         for (document in querySnapshot!!) {
-                            list_member.add(document.toObject(Mfd::class.java))
+                            var cur_data: Mfd = document.toObject(Mfd::class.java)
+                            cur_data.id = document.id
+                            list_member.add(cur_data)
                         }
+
 
                         dataAdapter = MfdAdapter(ArrayList(list_member), applicationContext)
                         listview.setAdapter(dataAdapter)

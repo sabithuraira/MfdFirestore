@@ -1,21 +1,23 @@
 package com.farifam.mfdfirestore
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 
 import kotlinx.android.synthetic.main.activity_form.*
 
-import java.util.ArrayList
 import java.util.HashMap
 
 /**
  * A login screen that offers login via email/password.
  */
 class FormActivity : AppCompatActivity(){
+    val settings: FirebaseFirestoreSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build();
     private val db by lazy { FirebaseFirestore.getInstance() }
     var id: String = ""
 
@@ -23,8 +25,13 @@ class FormActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form)
 
+        db.setFirestoreSettings(settings);
+
         if (intent.hasExtra("id"))
             id = intent.getStringExtra("id")
+
+
+//        Log.d(ContentValues.TAG, "idnya:" + id)
 
         if(id.length!=0){
             initializeUpdate()
@@ -38,19 +45,19 @@ class FormActivity : AppCompatActivity(){
             data.put("prov_no", prov_no.text.toString())
             data.put("prov_nama", prov_nama.text.toString())
             data.put("kab_no", kab_no.text.toString())
-            data.put("kab_nama", kab_nama.text.toString())
+            data.put("kab_nam", kab_nama.text.toString())
             data.put("kec_no", kec_no.text.toString())
             data.put("kec_nama", kec_nama.text.toString())
             data.put("desa_no", desa_no.text.toString())
             data.put("desa_nama", desa_nama.text.toString())
             data.put("blok_sensus", blok_sensus.text.toString())
-            data.put("kk", kk.text.toString().toInt())
-            data.put("bsbtt", bsbtt.text.toString().toInt())
+            data.put("kk", kk.text.toString())
+            data.put("bsbtt", bsbtt.text.toString())
             data.put("muatan_dominan", muatan_dominan.text.toString())
-            data.put("ruta_biasa", ruta_biasa.text.toString().toInt())
-            data.put("ruta_khusus", ruta_khusus.text.toString().toInt())
-            data.put("art_laki", art_laki.text.toString().toInt())
-            data.put("art_perempuan", art_perempuan.text.toString().toInt())
+            data.put("ruta_biasa", ruta_biasa.text.toString())
+            data.put("ruta_khusus", ruta_khusus.text.toString())
+            data.put("art_laki", art_laki.text.toString())
+            data.put("art_perempuan", art_perempuan.text.toString())
 
             if(id.length==0){
                 db.collection("datas")
@@ -67,20 +74,36 @@ class FormActivity : AppCompatActivity(){
             }
             else{
                 db.collection("datas").document(id)
-                        .update(data)
-                        .addOnSuccessListener{
-                            val intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            this.finish()
-                        }
-                        .addOnFailureListener{
-                            err_msg.text = "Failed updated data"
-                            err_msg.visibility = View.VISIBLE;
-                        }
+                        .addSnapshotListener(object : EventListener<DocumentSnapshot> {
+                            override fun onEvent(docSnapshot: DocumentSnapshot?,
+                                                 e: FirebaseFirestoreException?) {
+                                if (e != null) {
+                                    Log.w(ContentValues.TAG, "Listen error", e)
+                                    return
+                                }
+
+                                docSnapshot?.reference?.update(data)
+                                        ?.addOnSuccessListener {
+                                            val intent = Intent()
+                                            setResult(Activity.RESULT_OK, intent)
+                                            this@FormActivity.finish()
+                                        }
+                                        ?.addOnFailureListener{
+                                            err_msg.text = "Failed updated data"
+                                            err_msg.visibility = View.VISIBLE;
+                                        }
+
+                            }
+                        })
             }
         }
     }
 
+    override fun onDestroy() {
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        super.onDestroy()
+    }
 
     fun initializeUpdate(){
         prov_no.setText(intent.getStringExtra("prov_no"))
