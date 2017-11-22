@@ -60,43 +60,46 @@ class FormActivity : AppCompatActivity(){
             data.put("art_perempuan", art_perempuan.text.toString())
 
             if(id.length==0){
-                db.collection("datas")
-                        .add(data)
-                        .addOnSuccessListener {
-                            val intent = Intent()
-                            setResult(Activity.RESULT_OK, intent)
-                            this.finish()
+                db.collection("datas").document()
+                    .addSnapshotListener(object : EventListener<DocumentSnapshot> {
+                        override fun onEvent(snapshot: DocumentSnapshot?,
+                                             e: FirebaseFirestoreException?) {
+                            if (e != null) {
+                                Log.w(ContentValues.TAG, "Listen error", e)
+                                err_msg.text = e.message
+                                err_msg.visibility = View.VISIBLE;
+                                return
+                            }
+                            snapshot?.reference?.set(data)
+
+                            endActivity()
                         }
-                        .addOnFailureListener {
-                            err_msg.text = "Failed updated data"
-                            err_msg.visibility = View.VISIBLE;
-                        }
+                    })
             }
             else{
                 db.collection("datas").document(id)
-                        .addSnapshotListener(object : EventListener<DocumentSnapshot> {
-                            override fun onEvent(docSnapshot: DocumentSnapshot?,
-                                                 e: FirebaseFirestoreException?) {
-                                if (e != null) {
-                                    Log.w(ContentValues.TAG, "Listen error", e)
-                                    return
-                                }
-
-                                docSnapshot?.reference?.update(data)
-                                        ?.addOnSuccessListener {
-                                            val intent = Intent()
-                                            setResult(Activity.RESULT_OK, intent)
-                                            this@FormActivity.finish()
-                                        }
-                                        ?.addOnFailureListener{
-                                            err_msg.text = "Failed updated data"
-                                            err_msg.visibility = View.VISIBLE;
-                                        }
-
+                    .addSnapshotListener(object : EventListener<DocumentSnapshot> {
+                        override fun onEvent(snapshot: DocumentSnapshot?,
+                                             e: FirebaseFirestoreException?) {
+                            if (e != null) {
+                                Log.w(ContentValues.TAG, "Listen error", e)
+                                err_msg.text = e.message
+                                err_msg.visibility = View.VISIBLE;
+                                return
                             }
-                        })
+
+                            snapshot?.reference?.update(data)
+                            endActivity()
+                        }
+                    })
             }
         }
+    }
+
+    fun endActivity(){
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        this@FormActivity.finish()
     }
 
     override fun onDestroy() {

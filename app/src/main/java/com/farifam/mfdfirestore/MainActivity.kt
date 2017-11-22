@@ -71,13 +71,17 @@ class MainActivity : AppCompatActivity() {
 
     fun deleteData(position: Int){
         db.collection("datas").document(list_member[position].id)
-                .delete()
-                .addOnSuccessListener{
-                    loadFirestoreDatas()
-                }
-                .addOnFailureListener{
-                    toast("Failed to delete data, please check your connection")
-                }
+                .addSnapshotListener(object : EventListener<DocumentSnapshot> {
+                    override fun onEvent(snapshot: DocumentSnapshot?,
+                                         e: FirebaseFirestoreException?) {
+                        if (e != null) {
+                            Log.w(ContentValues.TAG, "Listen error", e)
+                            return
+                        }
+                        snapshot?.reference?.delete()
+                        loadFirestoreDatas()
+                    }
+                })
     }
 
     fun updateData(position: Int){
@@ -119,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
         val memberCollection = db.collection("datas");
 //        var query : Query = memberCollection.orderBy("first")
-
+//
 //        if(search.text.toString().length>0){
 //            query = memberCollection.whereEqualTo("first", search.text.toString())
 //
@@ -144,40 +148,51 @@ class MainActivity : AppCompatActivity() {
 //                }
 
         memberCollection
-                .addSnapshotListener(object : EventListener<QuerySnapshot> {
-                    override fun onEvent(querySnapshot: QuerySnapshot?,
-                                e: FirebaseFirestoreException?) {
-                        if (e != null) {
-                            Log.w(ContentValues.TAG, "Listen error", e)
-                            return
-                        }
-
-                        for (document in querySnapshot!!) {
-                            var cur_data: Mfd = document.toObject(Mfd::class.java)
-                            cur_data.id = document.id
-                            list_member.add(cur_data)
-                        }
-
-
-                        dataAdapter = MfdAdapter(ArrayList(list_member), applicationContext)
-                        listview.setAdapter(dataAdapter)
-
-                        progress.visibility = View.GONE
-
-                        for (change in querySnapshot!!.documentChanges) {
-                            if (change.type == DocumentChange.Type.ADDED) {
-                                Log.d(ContentValues.TAG, "New city:" + change.document.data)
-                            }
-
-                            val source = if (querySnapshot.metadata.isFromCache)
-                                "local cache"
-                            else
-                                "server"
-                            Log.d(ContentValues.TAG, "Data fetched from " + source)
-                        }
-
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(querySnapshot: QuerySnapshot?,
+                            e: FirebaseFirestoreException?) {
+                    if (e != null) {
+                        Log.w(ContentValues.TAG, "Listen error", e)
+                        return
                     }
-                })
+
+                    for (change in querySnapshot!!.documentChanges) {
+                        when (change.type) {
+                            DocumentChange.Type.ADDED -> onDocumentAdded(change)
+                            DocumentChange.Type.MODIFIED -> onDocumentModified(change)
+                            DocumentChange.Type.REMOVED -> onDocumentRemoved(change)
+                        }
+                    }
+
+                    dataAdapter = MfdAdapter(ArrayList(list_member), applicationContext)
+                    listview.setAdapter(dataAdapter)
+
+                    progress.visibility = View.GONE
+                }
+            })
+    }
+
+    fun onDocumentAdded(change: DocumentChange){
+        var cur_data: Mfd = change.document.toObject(Mfd::class.java)
+        cur_data.id = change.document.id
+
+        if(!list_member.any { x -> x.id == change.document.id })
+            list_member.add(cur_data)
+    }
+
+    fun onDocumentModified(change: DocumentChange){
+        var cur_data: Mfd = change.document.toObject(Mfd::class.java)
+        cur_data.id = change.document.id
+        if (change.getOldIndex() == change.getNewIndex()) {
+            list_member.set(change.getOldIndex(),  cur_data);
+        } else {
+            list_member.removeAt(change.getOldIndex());
+            list_member.add(change.getNewIndex(), cur_data);
+        }
+    }
+
+    fun onDocumentRemoved(change: DocumentChange){
+        list_member.removeAt(change.getOldIndex());
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -194,48 +209,4 @@ class MainActivity : AppCompatActivity() {
         } else super.onOptionsItemSelected(item)
 
     }
-
-//    var list_mfd= mutableListOf<Mfd>()
-//    var mfdAdapter : MfdAdapter? = null
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//        val toolbar = findViewById(R.id.toolbar) as Toolbar
-//        setSupportActionBar(toolbar)
-//
-//        val fab = findViewById(R.id.fab) as FloatingActionButton
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
-//
-//        list_mfd.add(Mfd("1673010001001P", "Sumatera Selatan", 16, "Pagar Alam", "73", "Dempo Selatan", "010", "Penjalang", "001", "001P"))
-//        list_mfd.add(Mfd("1673010001001P", "Sumatera Selatan", 16, "Pagar Alam", "73", "Dempo Selatan", "010", "Penjalang", "001", "002B"))
-//        list_mfd.add(Mfd("1673010001001P", "Sumatera Selatan", 16, "Pagar Alam", "73", "Dempo Selatan", "010", "Penjalang", "001", "003B"))
-//        list_mfd.add(Mfd("1673010001001P", "Sumatera Selatan", 16, "Pagar Alam", "73", "Dempo Selatan", "010", "Penjalang", "001", "004B"))
-//        list_mfd.add(Mfd("1673010001001P", "Sumatera Selatan", 16, "Pagar Alam", "73", "Dempo Selatan", "010", "Penjalang", "001", "005B"))
-//
-//        mfdAdapter = MfdAdapter(ArrayList(list_mfd), applicationContext)
-//        listview.setAdapter(mfdAdapter)
-//    }
-//
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        val id = item.itemId
-//
-//
-//        return if (id == R.id.action_settings) {
-//            true
-//        } else super.onOptionsItemSelected(item)
-//
-//    }
 }
